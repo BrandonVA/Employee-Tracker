@@ -1,0 +1,24 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "Apllication to track employees",
+  "main": "manageEmployees.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrandonVA/Employee-Tracker.git"
+  },
+  "author": "Brandon VanAllen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BrandonVA/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/BrandonVA/Employee-Tracker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^7.3.3",
+    "mysql": "^2.18.1"
+  }
+}
