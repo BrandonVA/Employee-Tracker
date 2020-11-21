@@ -13,35 +13,36 @@ const connection = mysql.createConnection({
 
     // Your password
     password: "yourPassword",
-    database: "employee_db" // name of database
+    database: "employee_db", // name of database
+    multipleStatements: true
 });
 
 
 
-
+// ________________________________TEST CALLS TO THE DATABASE________________________________________
 const getAllEmployees = () => {
     const query = `select * from employee`
-    connection.query(query, (err,res) => {
+    connection.query(query, (err, res) => {
         console.table(res);
-        
+
     })
 }
 // getAllEmployees()
 
 const getEmployeeByManager = () => {
     const query = `select * from employee where manager_id = 1`
-    connection.query(query, (err,res) => {
+    connection.query(query, (err, res) => {
         console.table(res);
-        
+
     })
 }
 // getEmployeeByManager()
 
 const getEmployeeByRole = () => {
     const query = `select * from employee where role_id = 2`
-    connection.query(query, (err,res) => {
+    connection.query(query, (err, res) => {
         console.table(res);
-        
+
     })
 }
 // getEmployeeByRole()
@@ -55,27 +56,22 @@ const getEmployeeData = async () => {
 
 const getAllRoles = () => {
     const query = `select * from employee `
-    connection.query(query, (err,res) => {
+    connection.query(query, (err, res) => {
         console.table(res);
         connection.query('select * from roles', (err, result) => {
 
-        }) 
+        })
         // connection.end()
     })
 
 }
 // getAllRoles()
+//__________________________________________________________________________________________________________________________
 
 
 
-
-connection.connect( (err) => {
+connection.connect((err) => {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
-    //   run management system here
-    // require('./db/dbCalls/getRoles')(connection)
-    
-    require('./db/dbCalls/viewAllData')(connection);
-    // require('./prompts/start')(connection);
+    require('./prompts/start')(connection);
 });
-
