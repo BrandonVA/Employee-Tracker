@@ -1,16 +1,9 @@
-// const getAllRoles = () => {
-//     const query = `select * from role`
-//     connection.query(query, (err,res) => {
-//         console.table(res);
-//         connection.end()
-//     })
-
-// }
 module.exports = (connection) => {
     const query = `select * from role`;
-    connection.query(query, (err,res) => {
+    connection.query(query, (err, res) => {
         console.table(res);
-        connection.end()
+        // connection.end()
+        require('../../prompts/start')(connection);
     })
 
 }
