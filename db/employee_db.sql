@@ -6,7 +6,7 @@ USE employee_db;
 
 CREATE TABLE department (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(30)NOT NULL, -- to hold department name
+    department_name VARCHAR(30)NOT NULL, -- to hold department name
     PRIMARY KEY(id)
 );
 
@@ -30,6 +30,7 @@ CREATE TABLE employee (
    manager_id  INT, -- to hold reference to another employee that manages the employee being Created. This field may be null if the employee has no manager
    PRIMARY KEY (id)
 );
+
 
 
 
