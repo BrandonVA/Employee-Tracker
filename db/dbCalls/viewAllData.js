@@ -5,23 +5,19 @@ join department on role.department_id = department.id `
 
 module.exports = (connection) => {
     connection.query(query, (err, results) => {
-        
+
         connection.query('select * from employee', (err, res) => {
             results.forEach(employee => {
-                if( employee.manager_id !== null) {
-                    // console.log(employee.manager_id)
+                if (employee.manager_id !== null) {
                     res.forEach(nestedEmployee => {
                         if (nestedEmployee.id === employee.manager_id) {
-                            // console.log(`${nestedEmployee.id} is = ${employee.manager_id}`)
                             employee.manager_id = `${nestedEmployee.first_name} ${nestedEmployee.last_name}`
                         }
                     })
                 }
             });
-            // console.table(res);
             console.table(results);
             require('../../prompts/start')(connection);
         })
-        // connection.end()
     })
 }
