@@ -25,6 +25,9 @@ const checkResponse = async (querySearch, connection) => {
         case 'Add new role':
             require('./roleData')(connection);
         break;
+        case 'Add new department':
+            require('./departmentData')(connection);
+        break;
         case 'Exit':
             connection.end();
         break;
@@ -45,6 +48,7 @@ module.exports =  async (connection) => {
                     'Add Employee',
                     'Delete Employee',
                     'Add new role',
+                    'Add new department',
                     'Exit'
                 ]
             }
