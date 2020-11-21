@@ -17,12 +17,7 @@ const connection = mysql.createConnection({
 });
 
 
-connection.connect( (err) => {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
-    //   run management system here
-    
-});
+
 
 const getAllEmployees = () => {
     const query = `select * from employee`
@@ -56,16 +51,31 @@ const getEmployeeData = async () => {
     console.log(`These are the roles: ${roles}`);
 }
 
-getEmployeeData() 
+// getEmployeeData() 
 
-// const getAllRoles = () => {
-//     const query = `select * from role`
-//     connection.query(query, (err,res) => {
-//         console.table(res);
-//         connection.end()
-//     })
+const getAllRoles = () => {
+    const query = `select * from employee `
+    connection.query(query, (err,res) => {
+        console.table(res);
+        connection.query('select * from roles', (err, result) => {
 
-// }
+        }) 
+        // connection.end()
+    })
+
+}
 // getAllRoles()
-require('./db/dbCalls/getRoles')(connection)
+
+
+
+
+connection.connect( (err) => {
+    if (err) throw err;
+    console.log("connected as id " + connection.threadId + "\n");
+    //   run management system here
+    // require('./db/dbCalls/getRoles')(connection)
+    
+    require('./db/dbCalls/viewAllData')(connection);
+    // require('./prompts/start')(connection);
+});
 
