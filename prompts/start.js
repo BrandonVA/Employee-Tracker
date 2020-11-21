@@ -1,10 +1,34 @@
 const inquirer = require('inquirer');
 
+const checkResponse = async (querySearch, connection) => {
 
+    switch(querySearch) {
+        case 'Search Employees': 
+            require('../db/dbCalls/getEmployees')(connection)
+        break;
+        case 'Search Roles' : 
+            require('../db/dbCalls/getRoles')(connection);
+        break;
+        case 'Search Departments': 
+            require('../db/dbCalls/getDepartments')(connection);
+        break;
+        case 'View All Employees and data': 
+            require('../db/dbCalls/viewAllData')(connection);
+        break;
+        case 'Add Employee':
+            // add employee call
+            require('./buildEmployee')(connection);
+        break;
+        case 'Delete Employee':
+            require('./employeeToDelete')(connection);
+        break;
+        case 'Exit':
+            connection.end();
+        break;
+    }
+}
 
 module.exports =  async (connection) => {
-    // Promise.return(
-        // require('../db/dbCalls/viewAllData')(connection);
         inquirer.prompt([
             {
                 type: 'list',
@@ -15,47 +39,18 @@ module.exports =  async (connection) => {
                     'Search Roles',
                     'Search Departments',
                     'View All Employees and data',
+                    'Add Employee',
+                    'Delete Employee',
                     'Exit'
                 ]
             }
         ]).then(response => {
-
             let querySearch = response.test
-
-            switch(querySearch) {
-                case 'Search Employees': 
-                    require('../db/dbCalls/getEmployees')(connection)
-                break;
-                case 'Search Roles' : 
-                    require('../db/dbCalls/getRoles')(connection);
-                break;
-                case 'Search Departments': 
-                    require('../db/dbCalls/getDepartments')(connection);
-                break;
-                case 'View All Employees and data': 
-                    require('../db/dbCalls/viewAllData')(connection);
-                break;
-                case 'Exit':
-                    connection.end();
-                break;
-            }
-
-
-            // if (querySearch === 'Search Employees') {
-            //       console.log('searching db for employees');
-            //       require('../db/dbCalls/getEmployees')(connection)
-            // } else if (querySearch === 'Search Roles') {
-            //     console.log("hello 1");
-            //     require('../db/dbCalls/getRoles')(connection)
-            // } else if (querySearch === 'Search Departments') {
-            //     console.log('Hello 2');
-            //     require('../db/dbCalls/getDepartments')(connection)
-            // } else if ( querySearch === 'View All Employees and data') {
-            //     require('../db/dbCalls/viewAllData')(connection)
-            // }else if (querySearch === 'Exit') {
-            //     connection.end()
-            // }
+            checkResponse(querySearch,connection)
         })
-    // )
-
 }
+
+
+
+
+
