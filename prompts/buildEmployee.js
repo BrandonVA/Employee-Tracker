@@ -3,7 +3,29 @@ const inquirer = require('inquirer');
 module.exports = (connection) => {
 
     connection.query('select * from employee; SELECT * FROM role;', (err, results, fields) => {
+        let mangerResults = results[0];
+        let roleResults = results[1];
         inquirer.prompt([
+            {
+                type: 'list',
+                name: 'typeOfEmployee',
+                message: 'What type of employee would you like to add',
+                choices: ['Manager', 'Employee'],
+                filter: function(val) {
+                    if (val === 'Manager'){
+                        return false
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        ]).then(response => {
+            inquirer.prompt([
+            {
+                type: 'input',
+                message: 'Employees first name',
+                name: 'first_name',
+            },
             {
                 type: 'input',
                 message: 'Employees first name',
@@ -19,18 +41,17 @@ module.exports = (connection) => {
                 message: 'Employees role',
                 name: 'role_id',
                 choices: function () {
-
                     let roleArray = [];
-                    let counter = results[1].length
+                    let counter = roleResults.length
                     for (let i = 0; i < counter; i++) {
-                        roleArray.push(results[1][i].title)
+                        roleArray.push(roleResults[i].title)
                     }
                     return roleArray;
                 },
                 filter: function (val) {
-                    for (let i = 0; i < results[1].length; i++) {
-                        if (results[1][i].title === val) {
-                            val = results[1][i].id;
+                    for (let i = 0; i < roleResults.length; i++) {
+                        if (roleResults[i].title === val) {
+                            val = roleResults[i].id;
                             return val;
                         }
                     }
@@ -41,28 +62,39 @@ module.exports = (connection) => {
                 message: 'Employees manager',
                 name: 'manager_id',
                 choices: function () {
-                    // console.log(employeeResults[0].title);
-                    let managerArray = [];
-                    let counter = results[0].length
-                    for (let i = 0; i < counter; i++) {
-                        if (results[0][i].manager_id === null) {
-                            managerArray.push(`${results[0][i].first_name} ${results[0][i].last_name}`)
+                    if (response.typeOfEmployee) {
+                        let managerArray = [];
+                        let counter = mangerResults.length
+                        for (let i = 0; i < counter; i++) {
+                            if (mangerResults[i].manager_id === null) {
+                                managerArray.push(`${mangerResults[i].first_name} ${mangerResults[i].last_name}`)
+                            }
                         }
+                        return managerArray;
+                    } else {
+                        return ['n/a'];
                     }
-                    return managerArray;
+
                 },
                 filter: function (val) {
-                    for (let i = 0; i < results[0].length; i++) {
-                        let managerName = `${results[0][i].first_name} ${results[0][i].last_name}`
-                        if (managerName === val) {
-                            val = results[0][i].id
-                            return val;
+                    if (response.typeOfEmployee) {
+                        for (let i = 0; i < mangerResults.length; i++) {
+                            let managerName = `${mangerResults[i].first_name} ${mangerResults[i].last_name}`
+                            if (managerName === val) {
+                                val = mangerResults[i].id
+                                return val;
+                            }
                         }
+                    } else {
+                        return null;
                     }
+
                 }
             },
         ]).then(newEmployeeData => {
+            console.log(newEmployeeData);
             require('../db/dbCalls/addingData/newEmployee')(connection, newEmployeeData);
+        })
         })
     })
 }
