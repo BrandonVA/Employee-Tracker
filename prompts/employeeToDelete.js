@@ -27,7 +27,7 @@ module.exports = (connection) => {
         ]).then(response => {
             let employeeToDelete = response.id;
             console.log(employeeToDelete);
-            require('../db/dbCalls/addingData/deleteEmployee')(connection, employeeToDelete);
+            require('../db/dbCalls/removingData/deleteEmployee')(connection, employeeToDelete);
         })
     })
 }

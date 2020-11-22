@@ -6,7 +6,7 @@ const checkResponse = async (querySearch, connection) => {
         case 'Search Employees': 
             require('../db/dbCalls/getEmployees')(connection)
         break;
-        case 'Search Roles' : 
+        case 'Search Roles': 
             require('../db/dbCalls/getRoles')(connection);
         break;
         case 'Search Departments': 
@@ -16,7 +16,6 @@ const checkResponse = async (querySearch, connection) => {
             require('../db/dbCalls/viewAllData')(connection);
         break;
         case 'Add Employee':
-            // add employee call
             require('./buildEmployee')(connection);
         break;
         case 'Delete Employee':
