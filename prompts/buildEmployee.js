@@ -1,26 +1,13 @@
 const inquirer = require('inquirer');
 
 module.exports = (connection) => {
-
     connection.query('select * from employee; SELECT * FROM role;', (err, results, fields) => {
+        // Holds a reference fo the different select statements from the db
         let managersResults = results[0];
         let roleResults = results[1];
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'typeOfEmployee',
-                message: 'What type of employee would you like to add',
-                choices: ['Manager', 'Employee'],
-                filter: function(val) {
-                    if (val === 'Manager'){
-                        return false
-                    } else {
-                        return true;
-                    }
-                }
-            }
-        ]).then(response => {
-            inquirer.prompt([
+
+        // Questions asked to build a new employee.
+        const questions = [
             {
                 type: 'input',
                 message: 'Employees first name',
@@ -57,33 +44,56 @@ module.exports = (connection) => {
                     }
                 }
             },
+        ]
+
+        // If the employee being added isn't a manager ask them who is the manager for that employee.
+        const addManger = {
+            type: 'list',
+            message: 'Employees manager',
+            name: 'manager_id',
+            choices: function () {
+                return require('./scripts/returnFullName')(managersResults);
+            },
+            filter: function (val) {
+                return require('./scripts/returnIdFromName')(managersResults, val);
+            }
+        }
+
+        // Function to initiate the first 3 questions for the employees data.
+        const askQuestions = () => {
+            inquirer.prompt(questions)
+                .then(newEmployeeData => {
+                    console.log(newEmployeeData);
+                    require('../db/dbCalls/addingData/newEmployee')(connection, newEmployeeData);
+                })
+        }
+
+
+        // Initial prompt for asking if the employee being added is a manager or not.
+        inquirer.prompt([
             {
                 type: 'list',
-                message: 'Employees manager',
-                name: 'manager_id',
-                choices: function () {
-                    if (response.typeOfEmployee) {
-
-                        return require('./scripts/returnFullName')(managersResults);
-                    } else {
-                        return ['n/a'];
-                    }
-
-                },
+                name: 'typeOfEmployee',
+                message: 'What type of employee would you like to add',
+                choices: ['Manager', 'Employee'],
                 filter: function (val) {
-                    if (response.typeOfEmployee) {
-
-                        return require('./scripts/returnIdFromName')(managersResults, val);
+                    if (val === 'Manager') {
+                        return true
                     } else {
-                        return null;
+                        return false;
                     }
-
                 }
-            },
-        ]).then(newEmployeeData => {
-            console.log(newEmployeeData);
-            require('../db/dbCalls/addingData/newEmployee')(connection, newEmployeeData);
-        })
+            }
+        ]).then(response => {
+            console.log(response.typeOfEmployee);
+            // If the employee is a manager build basic data for the manager.
+            if (response.typeOfEmployee) {
+                askQuestions();
+            } else {
+                // If the employee isn't a manager push another question to the array of questions and who is their manager.
+                questions.push(addManger);
+                askQuestions();
+            }
         })
     })
 }
