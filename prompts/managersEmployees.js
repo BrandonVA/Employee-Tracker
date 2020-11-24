@@ -8,11 +8,10 @@ module.exports = connection => {
                 name: 'managers_id',
                 message: 'What managers employees would you like to see.',
                 choices: function() {
-                    let array = [];
-                    for (let i = 0; i < results.length; i ++) {
-                        array.push(results[i].first_name);
-                    }
-                    return array;
+                    return require('./scripts/returnFullName')(results);
+                },
+                filter: function(val) {
+                    return require('./scripts/returnIdFromName')(results, val);
                 }
             }
         ]).then(response => {

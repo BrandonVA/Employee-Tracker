@@ -12,20 +12,10 @@ module.exports = connection => {
                 message: 'What employee would you like to assign to a new manager?',
                 name: 'employee_id',
                 choices: function() {
-                    const listOfEmployees = [];
-                    for (let i = 0; i < employeeList.length; i++) {
-                        listOfEmployees.push(`${employeeList[i].first_name} ${employeeList[i].last_name}`);
-                    }
-                    return listOfEmployees;
+                    return require('./scripts/returnFullName')(employeeList);
                 },
                 filter: function(val) {
-                    for (let i = 0; i < employeeList.length; i++) {
-                        let employee = `${employeeList[i].first_name} ${employeeList[i].last_name}`
-                        if (val === employee) {
-                            val = employeeList[i].id;
-                            return val;
-                        }
-                    }
+                    return require('./scripts/returnIdFromName')(employeeList, val);
                 },
             },
             {
@@ -33,18 +23,10 @@ module.exports = connection => {
                 message: 'What is the new manger for the employee',
                 name: 'newManager_id',
                 choices: function() {
-                    let listOfMangers = []
-                    for (let i = 0; i < managerList.length; i++) {
-                        listOfMangers.push(`${managerList[i].first_name} ${managerList[i].last_name}`)
-                    }
-                    return listOfMangers;
+                    return require('./scripts/returnFullName')(managerList);
                 },
                 filter: function(val) {
-                    for (let i = 0; i < managerList.length; i++) {
-                        if (val === `${managerList[i].first_name} ${managerList[i].last_name}`) {
-                            return managerList[i].id;
-                        }
-                    }
+                    return require('./scripts/returnIdFromName')(managerList, val);
                 }
             }
         ]).then(response => {

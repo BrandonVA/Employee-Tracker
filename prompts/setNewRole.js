@@ -6,26 +6,17 @@ module.exports = (connection) => {
         const roleData = results[0];
         const employeeData = results[1];
         console.table(roleData);
+        console.table(employeeData);
         inquirer.prompt([
             {
                 type: 'list',
                 message: 'What employee do you want to assign a new role for?',
                 name: 'employee_id',
                 choices: function() {
-                    const listOfEmployees = []
-                    for (let i = 0; i < employeeData.length; i++) {
-                        listOfEmployees.push(`${employeeData[i].first_name} ${employeeData[i].last_name}`);
-                    }
-                    return listOfEmployees;
+                    return require('./scripts/returnFullName')(employeeData);
                 },
                 filter: function(val) {
-                    for (let i = 0; i < employeeData.length; i++) {
-                        let employee = `${employeeData[i].first_name} ${employeeData[i].last_name}`;
-                        if (val === employee) {
-                            val = employeeData[i].id;
-                            return val;
-                        }
-                    }
+                    return require('./scripts/returnIdFromName')(employeeData, val);
                 }
             },
             {
