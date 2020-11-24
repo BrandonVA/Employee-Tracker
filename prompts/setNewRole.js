@@ -6,11 +6,10 @@ module.exports = (connection) => {
         const roleData = results[0];
         const employeeData = results[1];
         console.table(roleData);
-        // console.table(employeeData);
         inquirer.prompt([
             {
                 type: 'list',
-                message: 'Whats employee do you want to assign a new role for?',
+                message: 'What employee do you want to assign a new role for?',
                 name: 'employee_id',
                 choices: function() {
                     const listOfEmployees = []
@@ -50,9 +49,7 @@ module.exports = (connection) => {
                 }
             }
         ]).then(response => {
-            console.log(response);
             require('../db/dbCalls/addingData/updateEmployeeRoles')(connection, response);
         })
     })
-    // connection.end()
 }
