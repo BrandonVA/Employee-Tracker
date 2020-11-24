@@ -3,7 +3,7 @@ const inquirer = require('inquirer');
 module.exports = (connection) => {
 
     connection.query('select * from employee; SELECT * FROM role;', (err, results, fields) => {
-        let mangerResults = results[0];
+        let managersResults = results[0];
         let roleResults = results[1];
         inquirer.prompt([
             {
@@ -63,14 +63,8 @@ module.exports = (connection) => {
                 name: 'manager_id',
                 choices: function () {
                     if (response.typeOfEmployee) {
-                        let managerArray = [];
-                        let counter = mangerResults.length
-                        for (let i = 0; i < counter; i++) {
-                            if (mangerResults[i].manager_id === null) {
-                                managerArray.push(`${mangerResults[i].first_name} ${mangerResults[i].last_name}`)
-                            }
-                        }
-                        return managerArray;
+
+                        return require('./scripts/returnFullName')(managersResults);
                     } else {
                         return ['n/a'];
                     }
@@ -78,13 +72,8 @@ module.exports = (connection) => {
                 },
                 filter: function (val) {
                     if (response.typeOfEmployee) {
-                        for (let i = 0; i < mangerResults.length; i++) {
-                            let managerName = `${mangerResults[i].first_name} ${mangerResults[i].last_name}`
-                            if (managerName === val) {
-                                val = mangerResults[i].id
-                                return val;
-                            }
-                        }
+
+                        return require('./scripts/returnIdFromName')(managersResults, val);
                     } else {
                         return null;
                     }
