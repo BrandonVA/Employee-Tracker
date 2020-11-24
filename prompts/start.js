@@ -2,63 +2,71 @@ const inquirer = require('inquirer');
 
 const checkResponse = async (querySearch, connection) => {
 
-    switch(querySearch) {
-        case 'Search Employees': 
+    switch (querySearch) {
+        case 'Search Employees':
             require('../db/dbCalls/getEmployees')(connection)
-        break;
-        case 'Search Roles': 
+            break;
+        case 'Search Roles':
             require('../db/dbCalls/getRoles')(connection);
-        break;
-        case 'Search Departments': 
+            break;
+        case 'Search Departments':
             require('../db/dbCalls/getDepartments')(connection);
-        break;
-        case 'View All Employees and data': 
+            break;
+        case 'Search Employees by Manger':
+            require('./managersEmployees')(connection);
+            break;
+        case 'View All Employees and data':
             require('../db/dbCalls/viewAllData')(connection);
-        break;
+            break;
         case 'Add Employee':
             require('./buildEmployee')(connection);
-        break;
+            break;
         case 'Delete Employee':
             require('./employeeToDelete')(connection);
-        break;
+            break;
         case 'Add new role':
             require('./roleData')(connection);
-        break;
+            break;
         case 'Add new department':
             require('./departmentData')(connection);
-        break;
+            break;
         case 'Update Employees Role':
             require('./setNewRole')(connection);
-        break;
+            break;
+        case 'Update Employees Manger':
+            require('./changeManager')(connection);
+            break;
         case 'Exit':
             connection.end();
-        break;
+            break;
     }
 }
 
-module.exports =  async (connection) => {
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'test',
-                message: 'What would you like to do?',
-                choices: [
-                    'Search Employees',
-                    'Search Roles',
-                    'Search Departments',
-                    'View All Employees and data',
-                    'Add Employee',
-                    'Delete Employee',
-                    'Add new role',
-                    'Add new department',
-                    'Update Employees Role',
-                    'Exit'
-                ]
-            }
-        ]).then(response => {
-            let querySearch = response.test
-            checkResponse(querySearch,connection)
-        })
+module.exports = async (connection) => {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'test',
+            message: 'What would you like to do?',
+            choices: [
+                'Search Employees',
+                'Search Roles',
+                'Search Departments',
+                'Search Employees by Manger',
+                'View All Employees and data',
+                'Add Employee',
+                'Delete Employee',
+                'Add new role',
+                'Add new department',
+                'Update Employees Role',
+                'Update Employees Manger',
+                'Exit'
+            ]
+        }
+    ]).then(response => {
+        let querySearch = response.test
+        checkResponse(querySearch, connection)
+    })
 }
 
 
