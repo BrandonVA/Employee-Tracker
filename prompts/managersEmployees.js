@@ -15,7 +15,7 @@ module.exports = connection => {
                 }
             }
         ]).then(response => {
-            console.log(response);
+            require('../db/dbCalls/viewByManager')(connection, response.managers_id);
         })
     })
 
