@@ -76,8 +76,3 @@ module.exports = async (connection) => {
         checkResponse(querySearch, connection)
     })
 }
-
-
-
-
-
