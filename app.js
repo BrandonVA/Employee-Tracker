@@ -18,58 +18,6 @@ const connection = mysql.createConnection({
 });
 
 
-
-// ________________________________TEST CALLS TO THE DATABASE________________________________________
-const getAllEmployees = () => {
-    const query = `select * from employee`
-    connection.query(query, (err, res) => {
-        console.table(res);
-
-    })
-}
-// getAllEmployees()
-
-const getEmployeeByManager = () => {
-    const query = `select * from employee where manager_id = 1`
-    connection.query(query, (err, res) => {
-        console.table(res);
-
-    })
-}
-// getEmployeeByManager()
-
-const getEmployeeByRole = () => {
-    const query = `select * from employee where role_id = 2`
-    connection.query(query, (err, res) => {
-        console.table(res);
-
-    })
-}
-// getEmployeeByRole()
-const getEmployeeData = async () => {
-
-    let roles = await require('./db/dbCalls/getEmployees')(connection);
-    console.log(`These are the roles: ${roles}`);
-}
-
-// getEmployeeData() 
-
-const getAllRoles = () => {
-    const query = `select * from employee `
-    connection.query(query, (err, res) => {
-        console.table(res);
-        connection.query('select * from roles', (err, result) => {
-
-        })
-        // connection.end()
-    })
-
-}
-// getAllRoles()
-//__________________________________________________________________________________________________________________________
-
-
-
 connection.connect((err) => {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
