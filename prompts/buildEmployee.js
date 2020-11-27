@@ -1,9 +1,10 @@
 const inquirer = require('inquirer');
 
 module.exports = (connection) => {
-    connection.query('select * from employee; SELECT * FROM role;', (err, results, fields) => {
+    connection.query('select * from employee where manager_id IS NULL; SELECT * FROM role;', (err, results, fields) => {
         // Holds a reference fo the different select statements from the db
         let managersResults = results[0];
+        console.table(managersResults);
         let roleResults = results[1];
 
         // Questions asked to build a new employee.
