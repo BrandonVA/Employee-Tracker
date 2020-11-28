@@ -5,12 +5,13 @@ module.exports = (connection) => {
     FROM employee
     JOIN role ON employee.role_id = role.id
     join department on role.department_id = department.id; SELECT * FROM department`;
+
     connection.query(query, (err, results) => {
         if (err) throw err;
+        
         const allData = results[0];
         const allDepartments = results[1]
-        console.table(allData);
-        console.table(allDepartments);
+
         inquirer.prompt([
             {
                 type: 'list',
@@ -25,16 +26,17 @@ module.exports = (connection) => {
                 }
             }
         ]).then(response => {
-            console.log(response.department_name);
             let counter = 0;
             allData.forEach(element => {
                 if(element.department_name === response.department_name) {
                     counter += element.salary
                 }
             });
+
             let message = `The total budget for: ${response.department_name} is ${counter}`;
             console.log(message);
             console.log('\n');
+
             require('./start')(connection);
             
         })
