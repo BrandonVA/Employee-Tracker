@@ -20,7 +20,17 @@ npm i
 
 ## Usage 
 
-You need to include the information for the database you create in the app.js file and add it to the connection const. 
+- You need to include the information for the database you create in the app.js file and add it to the connection const. 
+
+- Type node app.js in the terminal and follow the prompts.
+<img src="Assets\Images\start.png" />
+
+- Viewing all data <br />
+<img src="Assets\Images\view-all.png" />
+
+- Adding an employee <br />
+<img src="Assets\Images\add-employee.png" />
+
 
 
 ## Contributing 
