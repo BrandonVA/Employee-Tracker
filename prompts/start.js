@@ -42,6 +42,9 @@ const checkResponse = async (querySearch, connection) => {
         case 'Update Employees Manger':
             require('./changeManager')(connection);
             break;
+            case 'Get Department Budget':
+                require('./getBudget')(connection);
+                break;
         case 'Exit':
             connection.end();
             break;
@@ -68,6 +71,7 @@ module.exports = async (connection) => {
                 'Add new department',
                 'Update Employees Role',
                 'Update Employees Manger',
+                'Get Department Budget',
                 'Exit'
             ]
         }
