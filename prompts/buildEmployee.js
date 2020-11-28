@@ -86,7 +86,6 @@ module.exports = (connection) => {
                 }
             }
         ]).then(response => {
-            console.log(response.typeOfEmployee);
             // If the employee is a manager build basic data for the manager.
             if (response.typeOfEmployee) {
                 askQuestions();
