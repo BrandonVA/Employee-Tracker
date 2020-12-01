@@ -64,7 +64,7 @@ module.exports = (connection) => {
         const askQuestions = () => {
             inquirer.prompt(questions)
                 .then(newEmployeeData => {
-                    console.log(newEmployeeData);
+                    
                     require('../db/dbCalls/addingData/newEmployee')(connection, newEmployeeData);
                 })
         }
